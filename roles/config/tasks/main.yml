@@ -1,0 +1,6 @@
+---
+- name: Setup apt packages in Pis
+  import_tasks: apt-packages.yml
+
+- name: Add netplan config to Pis
+  import_tasks: config.yml

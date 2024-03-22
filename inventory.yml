@@ -1,0 +1,23 @@
+init_pis:
+  hosts:
+    pi_one:
+      ansible_host: 192.168.1.100
+    pi-two:
+      ansible_host: 192.168.1.103
+    pi-three:
+      ansible_host: 192.168.1.103
+
+k3s_cluster:
+  hosts:
+    jarvis:
+      ansible_host: 192.168.1.101
+    drone-one:
+      ansible_host: 192.168.1.102
+    drone-two:
+      ansible_host: 192.168.1.103
+
+all:
+  vars:
+    ansible_user: terminator
+    ansible_ssh_private_key_file: ~/.ssh/jarvis/jarvis_key
+    ansible_python_interpreter: /usr/bin/python3

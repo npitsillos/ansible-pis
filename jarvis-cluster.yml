@@ -1,0 +1,33 @@
+# ---
+# - hosts: init_pis
+#   become: yes
+#   roles:
+#     - config
+
+- hosts: k3s_cluster
+  become: yes
+  vars:
+    tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTH_KEY') }}"
+  roles:
+    - role: artis3n.tailscale
+      vars:
+        verbose: true
+        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_AUTH_KEY') }}"
+        tailscale_oauth_preauthorized: true
+  post_tasks:
+    - name: Create vpn-auth-file for k3s
+      ansible.builtin.copy:
+        dest: /home/{{ansible_user}}/vpn-auth-file
+        content: "name=tailscale,joinKey={{ tailscale_authkey }}"
+
+- hosts: k3s_cluster
+  become: yes
+  roles:
+    - role: xanmanning.k3s
+      vars:
+        k3s_become: true
+        k3s_server:
+          disable:
+            - servicelb
+            - traefik
+          vpn-auth-file: home/terminator/vpn-auth-file
