@@ -6,7 +6,3 @@
 - name: Perform full upgrade
   ansible.builtin.apt:
     upgrade: full
-
-- name: Install K3S specific packages
-  ansible.builtin.apt:
-    name: linux-modules-extra-raspi
